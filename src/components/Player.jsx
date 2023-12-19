@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 export default function Player() {
-  const [changePlayer, setChangePlayer] = useState("");
+  const [changePlayer, setChangePlayer] = useState(null);
   const [submit, setSubmit] = useState(false);
 
   function handleChange(event) {
