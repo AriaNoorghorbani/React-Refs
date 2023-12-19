@@ -4,18 +4,16 @@ const resultModal = forwardRef(function ResultModal(
   { result, targetTime },
   ref
 ) {
-  const dialog = useRef();
-
+  const modal = useRef();
   useImperativeHandle(ref, () => {
     return {
       open() {
-        dialog.current.showModal();
+        modal.current.showModal();
       },
     };
   });
-
   return (
-    <dialog className="result-modal" ref={dialog}>
+    <dialog className="result-modal" ref={modal}>
       <h2>You {result}</h2>
       <p>
         The target time was <strong>{targetTime} seconds</strong>
