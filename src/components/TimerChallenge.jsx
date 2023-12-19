@@ -1,30 +1,41 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
+import ResultModal from "./ResultModal";
 
 export default function TimerChallenge({ title, targetTime }) {
-  const [isLost, setIsLost] = useState(false);
+  const [timerExpired, setTimerExpired] = useState(false);
   const [isStarted, setIsStarted] = useState(false);
 
+  const timer = useRef();
+
   function handleStart() {
-    setTimeout(() => {
-      setIsLost(true);
+    timer.current = setTimeout(() => {
+      setTimerExpired(true);
     }, targetTime * 1000);
     setIsStarted(true);
   }
+
+  function handleStop() {
+    clearTimeout(timer.current);
+    setIsStarted(false);
+  }
+
   return (
-    <section className="challenge">
-      <h2>{title}</h2>
-      {isLost && "You are lost"}
-      <p className="challenge-time">
-        {targetTime} second{targetTime > 1 ? "s" : ""}
-      </p>
-      <p>
-        <button onClick={handleStart}>
-          {isStarted ? "Stop" : "Start"} Challenge
-        </button>
-      </p>
-      <p className={isStarted ? "active" : undefined}>
-        {isStarted ? "Time is running..." : "Time is inactive"}
-      </p>
-    </section>
+    <>
+      {timerExpired && <ResultModal result="Lost" targetTime={targetTime} />}
+      <section className="challenge">
+        <h2>{title}</h2>
+        <p className="challenge-time">
+          {targetTime} second{targetTime > 1 ? "s" : ""}
+        </p>
+        <p>
+          <button onClick={isStarted ? handleStop : handleStart}>
+            {isStarted ? "Stop" : "Start"} Challenge
+          </button>
+        </p>
+        <p className={isStarted ? "active" : undefined}>
+          {isStarted ? "Time is running..." : "Time is inactive"}
+        </p>
+      </section>
+    </>
   );
 }
